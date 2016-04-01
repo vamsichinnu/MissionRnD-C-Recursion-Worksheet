@@ -24,7 +24,22 @@
 #include "stdafx.h"
 
 
+int count_steps(int s, int i, int *count)
+{
+	if (i <s)
+	{
+		count_steps(s, i + 1, count);
+		count_steps(s, i + 2, count);
+	}
+	else if (i == s&&s != 0)
+	{
+		(*count)++;
+	}
+	return *count;
+}
 int get_steps(int s)
 {
-	return 0;
+	int i = 0, count = 0;
+	return count_steps(s, i, &count);
+
 }

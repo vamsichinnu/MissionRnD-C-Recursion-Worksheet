@@ -34,7 +34,58 @@ Note : Check the function Parameters ,Its a double pointer .
 #include "stdafx.h"
 #include<stdlib.h>
 
+void tracePath(int * ans, int row, int col, int rows, int cols, int layer, int ** input_array, int pos, int way){
+	if (way == -2){
+		ans[pos++] = input_array[row][col];
+		if (col != cols - layer - 1)
+			tracePath(ans, row, col + 1, rows, cols, layer, input_array, pos, -2);
+		else{
+			if (row == rows - layer - 1)
+				return;
+			tracePath(ans, row + 1, col, rows, cols, layer, input_array, pos, -1);
+		}
+		return;
+	}
+	else if (way == -1){
+		ans[pos++] = input_array[row][col];
+		if (row != rows - layer - 1)
+			tracePath(ans, row + 1, col, rows, cols, layer, input_array, pos, -1);
+		else{
+			if (col == layer)
+				return;
+			tracePath(ans, row, col - 1, rows, cols, layer, input_array, pos, 2);
+		}
+		return;
+	}
+	else if (way == 1){
+		ans[pos++] = input_array[row][col];
+		if (row != layer + 1)
+			tracePath(ans, row - 1, col, rows, cols, layer, input_array, pos, 1);
+		else{
+			if (col == cols - layer - 1)
+				return;
+			tracePath(ans, row, col + 1, rows, cols, layer + 1, input_array, pos, -2);
+		}
+		return;
+	}
+	else{
+		ans[pos++] = input_array[row][col];
+		if (col != layer)
+			tracePath(ans, row, col - 1, rows, cols, layer, input_array, pos, 2);
+		else{
+			if (row == layer)
+				return;
+			tracePath(ans, row - 1, col, rows, cols, layer, input_array, pos, 1);
+		}
+		return;
+	}
+}
+
 int *spiral(int rows, int columns, int **input_array)
 {
-	return NULL;
+	if (input_array == NULL || rows <= 0 || columns <= 0)
+		return NULL;
+	int * ans = (int *)malloc(sizeof(int)*rows*columns);
+	tracePath(ans, 0, 0, rows, columns, 0, input_array, 0, -2);
+	return ans;
 }
